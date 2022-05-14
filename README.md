@@ -36,6 +36,25 @@ Python 3.10.4
 python app.py
 ```
 
+## Enter NetBank Credentials
+
+You will be prompted to enter your netbank credentials, enter for example :
+
+```
+NetBank User: 12345678
+NetBank Pass (hidden):
+```
+
+Your password will be hidden and not displayed.
+
+Or if you don't want to be prompted you can set them as environment variables :
+
+windows cmd :
+
+```
+set NETBANK_ID=12345678
+set NETBANK_PASS=12345678
+```
 
 ## Troubleshooting 
 

@@ -6,6 +6,7 @@ from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support.ui import Select
 import json 
 import os
 
@@ -84,27 +85,25 @@ def export_csv(account):
 
     wait = WebDriverWait(driver, 5)
 
-    try:
+    if driver.find_elements(By.CSS_SELECTOR, '#export-link'):
         button = driver.find_element(By.ID, 'export-link')
-    except:
-        print("No export button, skipping!")
-        return
+        button.click()     
+        export_types = driver.find_elements(By.ID, 'export-format-type')
+        for export_type in export_types:
+            if "CSV (e.g. MS Excel)" in export_type.text:
+                label = export_type.find_element(By.CLASS_NAME, 'form-check-label') 
+                label.click()
+                export = driver.find_element(By.ID, 'txnListExport-submit-btn')
+                export.click()
 
-    button.click()
+    if driver.find_elements(By.CSS_SELECTOR, '.export'):
+        button = driver.find_element(By.LINK_TEXT, 'Export')
+        button.click() 
+        select = Select(driver.find_element(By.ID, 'ctl00_CustomFooterContentPlaceHolder_ddlExportType1_field'))
+        select.select_by_visible_text("CSV (e.g. MS Excel)")
+        button_export = driver.find_element(By.ID, "ctl00_CustomFooterContentPlaceHolder_lbExport1")
+        button_export.click() 
     
-    
-    export_types = driver.find_elements(By.ID, 'export-format-type')
-    for export_type in export_types:
-        if "CSV (e.g. MS Excel)" in export_type.text:
-            label = export_type.find_element(By.CLASS_NAME, 'form-check-label') 
-
-            label.click()
-
-            export = driver.find_element(By.ID, 'txnListExport-submit-btn')
-
-            export.click()
-
-
 
 if __name__ == "__main__":
 
